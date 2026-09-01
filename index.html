@@ -2,651 +2,487 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Palavra Viva — cadastro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F1B33">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Palavra Viva">
+<title>Palavra Viva</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Cormorant+Garamond:wght@500;600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --navy:#0F1B33; --navy-claro:#1D2E4F;
-  --ouro:#C9A227; --ouro-fraco:#F0E4BC;
-  --papel:#F6F3EC; --papel-2:#FFFFFF;
-  --tinta:#1B1B1B; --tinta-2:#5A5A54;
-  --linha:#DCD6C7;
-  --erro:#A32D2D; --erro-bg:#FCEBEB;
-  --ok:#3B6D11; --ok-bg:#EAF3DE;
+  --navy:#0F1B33; --navy2:#1A2B4D; --navy3:#26395E;
+  --ouro:#C9A227; --ouro-claro:#E8CE79;
+  --papel:#F6F3EC; --branco:#FFF;
+  --tinta:#17203A; --tinta2:#5C6478;
+  --linha:rgba(255,255,255,.14);
+  --maluco:#E0913A; --quem:#3FA98A; --ordem:#7E7BD4;
+  --certo:#5DCAA5; --errado:#E07272;
 }
-*{box-sizing:border-box}
-body{margin:0;background:var(--papel);color:var(--tinta);
-  font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
-header{background:var(--navy);color:#fff;padding:14px 22px;display:flex;
-  align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-header h1{font-family:Cinzel,serif;font-size:19px;font-weight:500;margin:0;letter-spacing:.02em}
-header h1 span{color:var(--ouro)}
-#estado{font-size:13px;color:#B9C2D2}
-#estado.on{color:var(--ouro)}
-main{display:grid;grid-template-columns:290px minmax(0,1fr);gap:20px;
-  padding:20px;max-width:1180px;margin:0 auto;align-items:start}
-@media(max-width:860px){main{grid-template-columns:1fr}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--navy);min-height:100%}
+body{font-family:Nunito,-apple-system,BlinkMacSystemFont,sans-serif;color:#fff;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  overscroll-behavior:none}
+#app{max-width:640px;margin:0 auto;padding:18px 16px 32px;min-height:100vh}
+h1,h2,h3{font-family:Cinzel,serif;font-weight:600;margin:0}
+.serif{font-family:"Cormorant Garamond",serif}
 
-.painel{background:var(--papel-2);border:1px solid var(--linha);border-radius:10px;padding:16px}
-.painel h2{font-size:13px;font-weight:600;margin:0 0 12px;color:var(--tinta-2)}
+.topo{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.topo h1{font-size:20px;letter-spacing:.03em;flex:1}
+.topo h1 span{color:var(--ouro)}
+.voltar{background:none;border:none;color:#93A0BC;font-size:26px;line-height:1;
+  padding:4px 10px 8px;cursor:pointer;font-family:inherit}
+.eu{font-size:13px;color:#93A0BC;display:flex;align-items:center;gap:7px;cursor:pointer}
+.bolinha{width:26px;height:26px;border-radius:50%;background:var(--navy3);
+  display:grid;place-items:center;font-size:12px;font-weight:700;color:var(--ouro-claro)}
 
-label{display:block;font-size:12px;font-weight:600;color:var(--tinta-2);margin:12px 0 4px}
-input[type=text],textarea,select{width:100%;padding:8px 10px;border:1px solid var(--linha);
-  border-radius:6px;background:#fff;font:inherit;font-size:14px;color:var(--tinta)}
-textarea{font-family:"Cormorant Garamond",serif;font-size:19px;line-height:1.5;resize:vertical}
-input:focus,textarea:focus,select:focus{outline:2px solid var(--ouro);outline-offset:-1px;border-color:var(--ouro)}
-button{font:inherit;font-size:14px;padding:8px 14px;border-radius:6px;border:1px solid var(--navy);
-  background:var(--navy);color:#fff;cursor:pointer}
-button:hover{background:var(--navy-claro)}
-button.sec{background:#fff;color:var(--navy)}
-button.sec:hover{background:var(--papel)}
-button.mini{font-size:12px;padding:5px 9px}
-button.perigo{background:#fff;color:var(--erro);border-color:#E7C4C4}
-button:focus-visible{outline:2px solid var(--ouro);outline-offset:2px}
+.cartao{background:var(--navy2);border:1px solid var(--linha);border-radius:16px;
+  padding:16px 18px;margin-bottom:12px;width:100%;text-align:left;color:#fff;
+  font-family:inherit;font-size:16px;cursor:pointer;display:block;transition:transform .12s}
+.cartao:active{transform:scale(.985)}
+.cartao.travado{opacity:.5;cursor:default}
+.cartao .selo{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;
+  font-size:20px;margin-bottom:12px}
+.cartao b{display:block;font-size:17px;font-weight:700;margin-bottom:3px}
+.cartao small{display:block;color:#A7B2CA;font-size:13px;line-height:1.45}
+.estrelas{margin-top:10px;font-size:15px;color:var(--ouro);letter-spacing:2px}
+.estrelas .off{color:#3D4869}
 
-#lista{max-height:62vh;overflow:auto;margin:0 -6px}
-.item{padding:8px 10px;border-radius:6px;cursor:pointer;display:flex;
-  justify-content:space-between;gap:8px;align-items:baseline}
-.item:hover{background:var(--papel)}
-.item.sel{background:var(--ouro-fraco)}
-.item b{font-weight:600;font-size:13px}
-.item i{font-style:normal;font-size:11px;color:var(--tinta-2)}
-.pend{color:#8A6D1F}
-.filtros{display:flex;gap:6px;margin-bottom:10px}
-.filtros button{flex:1;font-size:12px;padding:6px 4px;background:#fff;color:var(--tinta-2);border-color:var(--linha)}
-.filtros button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.verso{font-family:"Cormorant Garamond",serif;font-size:25px;line-height:1.6;
+  background:var(--papel);color:var(--tinta);border-radius:14px;padding:18px 18px;margin-bottom:16px}
+.ref{font-family:Nunito,sans-serif;font-size:12px;font-weight:700;color:var(--ouro);
+  letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;display:block}
 
-.faixa{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end}
-.faixa>div{flex:1;min-width:150px}
-.checks{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px}
-.checks label{display:flex;align-items:center;gap:6px;margin:0;font-size:14px;font-weight:400;color:var(--tinta)}
-.checks input{margin:0}
+.linhas{background:var(--papel);border-radius:14px;padding:14px;margin-bottom:14px;min-height:88px}
+.linha{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;min-height:40px;
+  border-bottom:2px dashed #D8D2C2;padding-bottom:6px;align-items:center}
+.linha:last-child{border-bottom:none;margin-bottom:0}
+.vaga{min-width:34px;height:36px;border-radius:8px;background:#EAE5D7}
+.banco{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px}
+.ficha{font-family:"Cormorant Garamond",serif;font-size:21px;font-weight:600;
+  background:var(--branco);color:var(--tinta);border:none;border-radius:9px;
+  padding:6px 13px;cursor:pointer;font-feature-settings:"liga";box-shadow:0 2px 0 #C9C2B0;
+  transition:transform .1s}
+.ficha:active{transform:translateY(2px);box-shadow:none}
+.ficha.posta{background:#EFEADD;box-shadow:0 2px 0 #CFC7B2}
+.ficha.presa{background:var(--ouro-claro);box-shadow:0 2px 0 #B99A2E;cursor:default}
+.ficha.errou{background:#F6D3D3;box-shadow:0 2px 0 #D9A3A3}
 
-.verso{font-family:"Cormorant Garamond",serif;font-size:22px;line-height:2.1;
-  background:var(--papel);border:1px solid var(--linha);border-radius:8px;padding:14px 12px}
-.pal{padding:2px 3px;border-radius:4px;cursor:pointer;border-bottom:2px solid transparent}
-.pal:hover{border-bottom-color:var(--ouro)}
-.pal.lac{background:var(--ouro-fraco);border-bottom-color:var(--ouro)}
-.pal .cat{display:block;font-family:-apple-system,sans-serif;font-size:10px;
-  color:#8A6D1F;line-height:1.2;text-align:center}
-.corte{display:inline-block;width:12px;cursor:pointer;text-align:center;color:transparent}
-.corte:hover{color:var(--linha)}
-.corte.on{color:var(--ouro);font-weight:700}
-.dica{font-size:12px;color:var(--tinta-2);margin:6px 0 0}
-.blocos{margin-top:8px;display:flex;flex-direction:column;gap:4px}
-.bloco{font-family:"Cormorant Garamond",serif;font-size:17px;background:#fff;
-  border:1px solid var(--linha);border-left:3px solid var(--ouro);padding:4px 10px}
-.bloco span{font-family:-apple-system,sans-serif;font-size:11px;color:var(--tinta-2);margin-left:8px}
+.opcoes{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.opcao{background:var(--navy2);border:1px solid var(--linha);border-radius:12px;
+  padding:14px 16px;color:#fff;font-family:inherit;font-size:16px;text-align:left;cursor:pointer}
+.opcao.certa{background:#1D5E4B;border-color:var(--certo)}
+.opcao.errada{background:#5E2626;border-color:var(--errado)}
 
-fieldset{border:1px solid var(--linha);border-radius:8px;padding:12px 14px;margin:18px 0 0}
-legend{font-size:12px;font-weight:600;color:var(--tinta-2);padding:0 6px}
-.niveis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
-.niveis h3{font-size:12px;margin:0 0 6px;color:var(--tinta-2);font-weight:600}
-.niveis input{margin-bottom:5px}
+.barra{display:flex;gap:10px;flex-wrap:wrap}
+.bt{flex:1;min-width:120px;background:var(--ouro);color:#2A2205;border:none;border-radius:12px;
+  padding:14px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer}
+.bt:active{transform:scale(.98)}
+.bt.calmo{background:transparent;color:#A7B2CA;border:1px solid var(--linha)}
+.campo{width:100%;padding:14px;border-radius:12px;border:1px solid var(--linha);
+  background:var(--navy2);color:#fff;font-family:inherit;font-size:17px;margin-bottom:12px}
+.campo::placeholder{color:#6B7794}
 
-#aviso{margin:16px 0 0;padding:10px 14px;border-radius:8px;font-size:13px;display:none}
-#aviso ul{margin:6px 0 0;padding-left:18px}
-#aviso.ruim{display:block;background:var(--erro-bg);color:var(--erro);border:1px solid #E7C4C4}
-#aviso.bom{display:block;background:var(--ok-bg);color:var(--ok);border:1px solid #C6DCA6}
-#aviso.morno{display:block;background:#FAEEDA;color:#854F0B;border:1px solid #EBD5A8}
-
-.acoes{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;align-items:center}
-.acoes .dir{margin-left:auto}
-#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:-70px;background:var(--navy);
-  color:#fff;padding:11px 22px;border-radius:8px;font-size:14px;transition:bottom .25s;z-index:9}
-#toast.on{bottom:24px}
-#config{max-width:520px;margin:60px auto}
-.oculto{display:none}
-@media(prefers-reduced-motion:reduce){#toast{transition:none}}
+.dica{color:#93A0BC;font-size:13px;line-height:1.5;margin:0 0 14px}
+.contexto{background:var(--navy2);border-left:3px solid var(--ouro);border-radius:0 10px 10px 0;
+  padding:12px 14px;font-size:14px;line-height:1.55;color:#D6DCEA;margin-bottom:16px}
+.contexto b{color:var(--ouro-claro)}
+.aviso{background:#3A2E12;border:1px solid #6B5620;color:#E8CE79;border-radius:10px;
+  padding:10px 13px;font-size:13px;margin-bottom:16px;line-height:1.5}
+.progresso{font-size:13px;color:#93A0BC;margin-bottom:14px;display:flex;justify-content:space-between}
+.fim{text-align:center;padding:24px 0}
+.fim .grandes{font-size:40px;color:var(--ouro);letter-spacing:6px;margin:14px 0}
+.fim h2{font-size:22px;margin-bottom:8px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
+<div id="app"></div>
 
-<header>
-  <h1>Palavra <span>Viva</span> — cadastro <small style="font-family:-apple-system,sans-serif;font-size:11px;font-weight:400;color:#7D8AA3;letter-spacing:0">v. 01/09 18h50</small></h1>
-  <div style="display:flex;align-items:center;gap:14px">
-    <div id="estado">desconectado</div>
-    <button id="btSair" class="sec mini oculto">Sair</button>
-  </div>
-</header>
-
-<section id="config" class="painel">
-  <h2>Entrar</h2>
-  <label for="cfgUrl">URL do projeto</label>
-  <input type="text" id="cfgUrl" placeholder="https://xxxxxxxx.supabase.co">
-  <label for="cfgKey">Chave publicável (sb_publishable_… ou anon)</label>
-  <input type="text" id="cfgKey" placeholder="sb_publishable_...">
-  <label for="cfgEmail">Seu e-mail</label>
-  <input type="text" id="cfgEmail" autocomplete="username">
-  <label for="cfgSenha">Senha</label>
-  <input type="password" id="cfgSenha" autocomplete="current-password">
-
-  <fieldset style="margin-top:18px">
-    <legend>Banco da Bíblia</legend>
-    <p class="dica" style="margin-top:0">De onde vem o texto dos versículos. É o projeto do app Leitura da Bíblia.</p>
-    <label for="cfgBibUrl">URL</label>
-    <input type="text" id="cfgBibUrl" placeholder="https://gehoznuzimebjdqxhtia.supabase.co">
-    <label for="cfgBibKey">Chave publicável desse projeto</label>
-    <input type="text" id="cfgBibKey" placeholder="sb_publishable_...">
-  </fieldset>
-
-  <p class="dica">A URL e as chaves ficam guardadas neste navegador; a senha, não.</p>
-  <div class="acoes"><button id="btConectar">Entrar</button></div>
-</section>
-
-<main id="app" class="oculto">
-  <aside class="painel">
-    <h2>Versículos</h2>
-    <div class="filtros">
-      <button data-f="todos" class="on">Todos</button>
-      <button data-f="pendentes">Pendentes</button>
-      <button data-f="aprovados">Prontos</button>
-    </div>
-    <div id="lista"></div>
-    <div class="acoes"><button id="btNovo" class="sec">Novo versículo</button></div>
-    <div class="acoes" style="margin-top:6px">
-      <button id="btLote" class="sec mini">Trazer todos os textos da Bíblia</button>
-    </div>
-    <div id="relatorio"></div>
-  </aside>
-
-  <section class="painel">
-    <div class="faixa">
-      <div>
-        <label for="ref">Referência</label>
-        <div style="display:flex;gap:8px">
-          <input type="text" id="ref" placeholder="João 3:16">
-          <button id="btBuscar" class="sec" type="button" style="white-space:nowrap">Buscar texto</button>
-        </div>
-      </div>
-      <div style="flex:0 0 130px">
-        <label for="dif">Dificuldade</label>
-        <select id="dif">
-          <option value="1">1 — fácil</option>
-          <option value="2" selected>2 — média</option>
-          <option value="3">3 — difícil</option>
-        </select>
-      </div>
-      <div style="flex:0 0 160px">
-        <label for="jornada">Jornada</label>
-        <select id="jornada"></select>
-      </div>
-      <div style="flex:0 0 150px">
-        <label for="versao">Versão</label>
-        <select id="versao"></select>
-      </div>
-    </div>
-
-    <label for="texto">Texto do versículo</label>
-    <textarea id="texto" rows="3" placeholder="Cole aqui o texto conferido na sua base."></textarea>
-
-    <label>Modos de jogo</label>
-    <div class="checks">
-      <label><input type="checkbox" id="mMaluco" checked> Versículo maluco</label>
-      <label><input type="checkbox" id="mQuem" checked> Quem disse</label>
-      <label><input type="checkbox" id="mOrdem" checked> Palavras em ordem</label>
-    </div>
-
-    <fieldset>
-      <legend>Lacunas do Versículo maluco</legend>
-      <div id="versoLac" class="verso"></div>
-      <p class="dica">Clique numa palavra para abrir uma lacuna. Clique de novo para desfazer.</p>
-    </fieldset>
-
-    <fieldset>
-      <legend>Blocos do Palavras em ordem</legend>
-      <div id="versoBlc" class="verso"></div>
-      <p class="dica">Clique nos espaços entre as palavras para cortar o versículo em linhas.
-        <button id="btAuto" class="sec mini" type="button">Cortar pela pontuação</button></p>
-      <div id="blocos" class="blocos"></div>
-    </fieldset>
-
-    <fieldset id="fsQuem">
-      <legend>Quem disse</legend>
-      <div class="faixa">
-        <div><label for="personagem">Quem falou</label><input type="text" id="personagem" placeholder="Jesus"></div>
-        <div><label for="aquem">A quem</label><input type="text" id="aquem" placeholder="a Tomé"></div>
-      </div>
-      <label for="contexto">Contexto que aparece depois da resposta</label>
-      <input type="text" id="contexto" placeholder="No cenáculo, respondendo a quem disse não saber para onde ele ia.">
-      <div class="niveis" style="margin-top:14px">
-        <div><h3>Fácil — épocas distantes</h3><div id="dFacil"></div></div>
-        <div><h3>Médio — mesmo período</h3><div id="dMedio"></div></div>
-        <div><h3>Difícil — mesma cena</h3><div id="dDificil"></div></div>
-      </div>
-    </fieldset>
-
-    <div id="aviso"></div>
-
-    <div class="acoes">
-      <button id="btSalvar">Salvar rascunho</button>
-      <button id="btAprovar" class="sec">Salvar e liberar para o jogo</button>
-      <button id="btExcluir" class="perigo mini dir">Excluir</button>
-    </div>
-  </section>
-</main>
-
-<div id="toast"></div>
-<div id="falha" style="display:none;margin:20px;padding:14px 16px;border-radius:8px;
-  background:#FCEBEB;color:#A32D2D;border:1px solid #E7C4C4;font-size:14px"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
-window.onerror = function (msg, arq, lin) {
-  var f = document.getElementById("falha");
-  f.style.display = "block";
-  f.textContent = "A página encontrou um problema: " + msg + " (linha " + lin + ")";
+/* ====== CONFIGURAÇÃO — cole os dados do projeto do jogo ====== */
+const CFG = {
+  URL: "",            // ex.: https://bypmcnwkxxhqcbrpzefk.supabase.co
+  KEY: "",            // chave publicável (sb_publishable_...)
+  JORNADA: "vida-de-jesus"
 };
-if (location.protocol === "file:") {
-  document.getElementById("falha").style.display = "block";
-  document.getElementById("falha").textContent =
-    "Esta página precisa ser aberta por um endereço https (GitHub Pages). Aberta direto do disco, o navegador bloqueia o login.";
-}
-if (!window.supabase || !window.supabase.createClient) {
-  document.getElementById("falha").style.display = "block";
-  document.getElementById("falha").textContent =
-    "Não consegui carregar a biblioteca do Supabase. Verifique a conexão com a internet e recarregue a página.";
-}
-var _criar = window.supabase ? window.supabase.createClient : null;
-var _clientes = {};
-function createClient(url, key, opts) {
-  var chave = url + "|" + ((opts && opts.db && opts.db.schema) || "public");
-  if (!_clientes[chave]) _clientes[chave] = _criar(url, key, opts);
-  return _clientes[chave];
-}
+/* ============================================================ */
+</script>
+<script>
+const DEMO = [{"id":"vj-001","ref":"Lucas 1:38","texto":"Eis aqui a serva do Senhor; cumpra-se em mim segundo a tua palavra.","dificuldade":2,"modos":["maluco","quem","ordem"],"quem_disse":{"personagem":"Maria","a_quem":"ao anjo Gabriel","contexto":"Em Nazaré, respondendo ao anúncio de que conceberia o Filho do Altíssimo.","distratores":{"facil":["Sara","Rute","Ester"],"medio":["Isabel","Ana, mãe de Samuel","Marta"],"dificil":["Isabel","Ana, a profetisa","Maria Madalena"]}},"lacunas":[{"pos":3,"categoria":"uma profissão","palavra":"serva"},{"pos":12,"categoria":"um objeto que existe na sua casa","palavra":"palavra"}],"blocos":["Eis aqui a serva do Senhor;","cumpra-se em mim segundo a tua palavra."]},{"id":"vj-002","ref":"Lucas 2:7","texto":"E deu à luz a seu filho primogênito, e envolveu-o em panos, e deitou-o numa manjedoura, porque não havia lugar para eles na estalagem.","dificuldade":3,"modos":["maluco","ordem"],"quem_disse":null,"lacunas":[{"pos":11,"categoria":"uma peça de roupa","palavra":"panos"},{"pos":15,"categoria":"um móvel","palavra":"manjedoura"},{"pos":23,"categoria":"um lugar da sua cidade","palavra":"estalagem"}],"blocos":["E deu à luz a seu filho primogênito,","e envolveu-o em panos,","e deitou-o numa manjedoura,","porque não havia lugar para eles na estalagem."]},{"id":"vj-003","ref":"Lucas 2:11","texto":"Pois, na cidade de Davi, vos nasceu hoje o Salvador, que é Cristo, o Senhor.","dificuldade":2,"modos":["maluco","quem","ordem"],"quem_disse":{"personagem":"O anjo do Senhor","a_quem":"aos pastores","contexto":"De noite, no campo, aos que guardavam os rebanhos perto de Belém.","distratores":{"facil":["Moisés","Davi","Elias"],"medio":["João Batista","Simeão","Zacarias"],"dificil":["Simeão","Ana, a profetisa","Zacarias"]}},"lacunas":[{"pos":2,"categoria":"um lugar","palavra":"cidade"},{"pos":7,"categoria":"um dia da semana","palavra":"hoje"}],"blocos":["Pois, na cidade de Davi,","vos nasceu hoje o Salvador,","que é Cristo, o Senhor."]},{"id":"vj-004","ref":"João 1:14","texto":"E o Verbo se fez carne, e habitou entre nós, e vimos a sua glória, como a glória do unigênito do Pai, cheio de graça e de verdade.","dificuldade":3,"modos":["maluco","ordem"],"quem_disse":null,"lacunas":[{"pos":7,"categoria":"um verbo no passado (ele ___)","palavra":"habitou"},{"pos":22,"categoria":"um adjetivo","palavra":"cheio"}],"blocos":["E o Verbo se fez carne,","e habitou entre nós,","e vimos a sua glória,","como a glória do unigênito do Pai,","cheio de graça e de verdade."]},{"id":"vj-005","ref":"João 1:29","texto":"Eis o Cordeiro de Deus, que tira o pecado do mundo.","dificuldade":1,"modos":["maluco","quem","ordem"],"quem_disse":{"personagem":"João Batista","a_quem":"aos que estavam com ele","contexto":"Junto ao Jordão, ao ver Jesus vindo em sua direção.","distratores":{"facil":["Abraão","Josué","Salomão"],"medio":["Pedro","André","Filipe"],"dificil":["André","Natanael","João, o discípulo"]}},"lacunas":[{"pos":2,"categoria":"um animal","palavra":"Cordeiro"}],"blocos":["Eis o Cordeiro de Deus,","que tira o pecado do mundo."]},{"id":"vj-006","ref":"Mateus 3:17","texto":"Este é o meu Filho amado, em quem me comprazo.","dificuldade":2,"modos":["maluco","quem","ordem"],"quem_disse":{"personagem":"O Pai (voz dos céus)","a_quem":"publicamente, no batismo de Jesus","contexto":"No Jordão, quando o Espírito desceu como pomba sobre Jesus.","distratores":{"facil":["Moisés","Elias","Isaías"],"medio":["João Batista","Um anjo","Pedro"],"dificil":["João Batista","Um anjo do Senhor","O Espírito Santo"]}},"lacunas":[{"pos":5,"categoria":"um adjetivo","palavra":"amado"}],"blocos":["Este é o meu Filho amado,","em quem me comprazo."]},{"id":"vj-007","ref":"Mateus 4:4","texto":"Nem só de pão viverá o homem, mas de toda a palavra que sai da boca de Deus.","dificuldade":2,"modos":["maluco","quem","ordem"],"quem_disse":{"personagem":"Jesus","a_quem":"ao tentador","contexto":"No deserto, após quarenta dias de jejum, respondendo à primeira tentação.","distratores":{"facil":["Moisés","Davi","Jonas"],"medio":["Paulo","Pedro","João Batista"],"dificil":["Moisés","João Batista","O tentador"]}},"lacunas":[{"pos":3,"categoria":"uma comida","palavra":"pão"},{"pos":15,"categoria":"uma parte do corpo","palavra":"boca"}],"blocos":["Nem só de pão viverá o homem,","mas de toda a palavra","que sai da boca de Deus."]},{"id":"vj-008","ref":"Mateus 4:19","texto":"Vinde após mim, e eu vos farei pescadores de homens.","dificuldade":1,"modos":["maluco","quem","ordem"],"quem_disse":{"personagem":"Jesus","a_quem":"a Pedro e André","contexto":"À beira do mar da Galileia, chamando dois irmãos que lançavam a rede.","distratores":{"facil":["Noé","Abraão","Salomão"],"medio":["Pedro","Paulo","João Batista"],"dificil":["Pedro","André","Tiago"]}},"lacunas":[{"pos":7,"categoria":"uma profissão no plural","palavra":"pescadores"}],"blocos":["Vinde após mim,","e eu vos farei pescadores de homens."]},{"id":"vj-009","ref":"Mateus 5:14","texto":"Vós sois a luz do mundo; não se pode esconder uma cidade edificada sobre um monte.","dificuldade":2,"modos":["maluco","quem","ordem"],"quem_disse":{"personagem":"Jesus","a_quem":"aos discípulos e à multidão","contexto":"No Sermão do Monte, logo depois das bem-aventuranças.","distratores":{"facil":["Davi","Salomão","Daniel"],"medio":["Paulo","Pedro","Tiago"],"dificil":["Paulo","João, o discípulo","Isaías"]}},"lacunas":[{"pos":3,"categoria":"algo que ilumina","palavra":"luz"},{"pos":15,"categoria":"um lugar alto","palavra":"monte"}],"blocos":["Vós sois a luz do mundo;","não se pode esconder uma cidade","edificada sobre um monte."]},{"id":"vj-010","ref":"Mateus 6:33","texto":"Mas buscai primeiro o reino de Deus, e a sua justiça, e todas estas coisas vos serão acrescentadas.","dificuldade":2,"modos":["maluco","quem","ordem"],"quem_disse":{"personagem":"Jesus","a_quem":"aos discípulos e à multidão","contexto":"No Sermão do Monte, ensinando a não andar ansioso pelo dia de amanhã.","distratores":{"facil":["Salomão","Jó","Josué"],"medio":["Paulo","Tiago","Pedro"],"dificil":["Tiago","Paulo","João Batista"]}},"lacunas":[{"pos":2,"categoria":"um número ordinal (primeiro, quinto...)","palavra":"primeiro"},{"pos":10,"categoria":"uma qualidade","palavra":"justiça"}],"blocos":["Mas buscai primeiro o reino de Deus,","e a sua justiça,","e todas estas coisas vos serão acrescentadas."]},{"id":"vj-011","ref":"Mateus 7:7","texto":"Pedi, e dar-se-vos-á; buscai, e encontrareis; batei, e abrir-se-vos-á.","dificuldade":3,"modos":["quem","ordem"],"quem_disse":{"personagem":"Jesus","a_quem":"aos discípulos e à multidão","contexto":"No Sermão do Monte, ensinando sobre a oração persistente.","distratores":{"facil":["Davi","Elias","Moisés"],"medio":["Tiago","Paulo","Pedro"],"dificil":["Tiago","João, o discípulo","Paulo"]}},"lacunas":[],"blocos":["Pedi, e dar-se-vos-á;","buscai, e encontrareis;","batei, e abrir-se-vos-á."]},{"id":"vj-012","ref":"Mateus 8:8","texto":"Senhor, não sou digno de que entres debaixo do meu telhado, mas dize somente uma palavra, e o meu criado sarará.","dificuldade":3,"modos":["maluco","quem","ordem"],"quem_disse":{"personagem":"O centurião","a_quem":"a Jesus","contexto":"Em Cafarnaum, pedindo cura para o seu servo paralítico.","distratores":{"facil":["Moisés","Davi","Daniel"],"medio":["Pedro","Jairo","Zaqueu"],"dificil":["Jairo","Zaqueu","O nobre de Cafarnaum"]}},"lacunas":[{"pos":10,"categoria":"uma parte da casa","palavra":"telhado"},{"pos":19,"categoria":"uma pessoa da família","palavra":"criado"}],"blocos":["Senhor, não sou digno","de que entres debaixo do meu telhado,","mas dize somente uma palavra,","e o meu criado sarará."]},{"id":"vj-013","ref":"Marcos 4:39","texto":"Cala-te, aquieta-te.","dificuldade":1,"modos":["quem"],"quem_disse":{"personagem":"Jesus","a_quem":"ao vento e ao mar","contexto":"Numa barca, durante a grande tempestade no mar da Galileia.","distratores":{"facil":["Jonas","Noé","Elias"],"medio":["Pedro","Paulo","Moisés"],"dificil":["Pedro","Elias","Moisés"]}},"lacunas":[],"blocos":[]},{"id":"vj-014","ref":"Mateus 11:28","texto":"Vinde a mim, todos os que estais cansados e oprimidos, e eu vos aliviarei.","dificuldade":1,"modos":["maluco","quem","ordem"],"quem_disse":{"personagem":"Jesus","a_quem":"à multidão","contexto":"Depois de repreender as cidades que não se arrependeram.","distratores":{"facil":["Davi","Moisés","Josué"],"medio":["Paulo","Pedro","Isaías"],"dificil":["Isaías","Paulo","João Batista"]}},"lacunas":[{"pos":7,"categoria":"um adjetivo no plural","palavra":"cansados"}],"blocos":["Vinde a mim,","todos os que estais cansados e oprimidos,","e eu vos aliviarei."]},{"id":"vj-015","ref":"Mateus 14:25","texto":"E, à quarta vigília da noite, dirigiu-se Jesus para eles, andando por cima do mar.","dificuldade":2,"modos":["maluco","ordem"],"quem_disse":null,"lacunas":[{"pos":5,"categoria":"um período do dia","palavra":"noite"},{"pos":14,"categoria":"um lugar com água","palavra":"mar"}],"blocos":["E, à quarta vigília da noite,","dirigiu-se Jesus para eles,","andando por cima do mar."]},{"id":"vj-016","ref":"Mateus 16:16","texto":"Tu és o Cristo, o Filho do Deus vivo.","dificuldade":1,"modos":["maluco","quem","ordem"],"quem_disse":{"personagem":"Pedro","a_quem":"a Jesus","contexto":"Em Cesareia de Filipe, respondendo à pergunta sobre quem os discípulos diziam que ele era.","distratores":{"facil":["Moisés","Davi","Abraão"],"medio":["João Batista","Paulo","Tomé"],"dificil":["Tomé","André","João, o discípulo"]}},"lacunas":[{"pos":8,"categoria":"um adjetivo","palavra":"vivo"}],"blocos":["Tu és o Cristo,","o Filho do Deus vivo."]},{"id":"vj-017","ref":"João 6:35","texto":"Eu sou o pão da vida; aquele que vem a mim não terá fome, e quem crê em mim nunca terá sede.","dificuldade":2,"modos":["maluco","quem","ordem"],"quem_disse":{"personagem":"Jesus","a_quem":"à multidão em Cafarnaum","contexto":"No dia seguinte à multiplicação dos pães, quando o povo o procurou de novo.","distratores":{"facil":["Moisés","Elias","Davi"],"medio":["Paulo","Pedro","João Batista"],"dificil":["Moisés","Paulo","Pedro"]}},"lacunas":[{"pos":3,"categoria":"uma comida","palavra":"pão"},{"pos":13,"categoria":"uma sensação","palavra":"fome"}],"blocos":["Eu sou o pão da vida;","aquele que vem a mim não terá fome,","e quem crê em mim nunca terá sede."]},{"id":"vj-018","ref":"João 8:12","texto":"Eu sou a luz do mundo; quem me segue não andará em trevas, mas terá a luz da vida.","dificuldade":2,"modos":["maluco","quem","ordem"],"quem_disse":{"personagem":"Jesus","a_quem":"aos fariseus e ao povo","contexto":"No templo, junto à arca do tesouro, durante a festa dos tabernáculos.","distratores":{"facil":["Salomão","Isaías","Daniel"],"medio":["Paulo","João Batista","Pedro"],"dificil":["João Batista","Paulo","Isaías"]}},"lacunas":[{"pos":12,"categoria":"algo escuro","palavra":"trevas"}],"blocos":["Eu sou a luz do mundo;","quem me segue não andará em trevas,","mas terá a luz da vida."]},{"id":"vj-019","ref":"Marcos 9:24","texto":"Eu creio, Senhor! Ajuda a minha incredulidade.","dificuldade":2,"modos":["quem","ordem"],"quem_disse":{"personagem":"O pai do menino endemoninhado","a_quem":"a Jesus","contexto":"Ao pé do monte da transfiguração, depois que os discípulos não conseguiram curar o filho.","distratores":{"facil":["Davi","Jó","Moisés"],"medio":["Pedro","Tomé","Jairo"],"dificil":["Jairo","Tomé","O centurião"]}},"lacunas":[],"blocos":["Eu creio, Senhor!","Ajuda a minha incredulidade."]},{"id":"vj-020","ref":"Marcos 10:14","texto":"Deixai vir os meninos a mim, e não os impeçais, porque dos tais é o reino de Deus.","dificuldade":2,"modos":["maluco","quem","ordem"],"quem_disse":{"personagem":"Jesus","a_quem":"aos discípulos","contexto":"Quando os discípulos repreenderam os que traziam crianças para que ele as tocasse.","distratores":{"facil":["Moisés","Samuel","Davi"],"medio":["Pedro","Paulo","Tiago"],"dificil":["Pedro","Paulo","André"]}},"lacunas":[{"pos":3,"categoria":"um grupo de pessoas no plural","palavra":"meninos"}],"blocos":["Deixai vir os meninos a mim,","e não os impeçais,","porque dos tais é o reino de Deus."]},{"id":"vj-021","ref":"Lucas 19:5","texto":"Zaqueu, desce depressa, porque hoje me convém pousar em tua casa.","dificuldade":2,"modos":["maluco","quem","ordem"],"quem_disse":{"personagem":"Jesus","a_quem":"a Zaqueu","contexto":"Em Jericó, olhando para cima, para o homem que subira num sicômoro.","distratores":{"facil":["Elias","Samuel","Josué"],"medio":["Pedro","João Batista","Paulo"],"dificil":["Pedro","Um dos publicanos","Um dos fariseus"]}},"lacunas":[{"pos":2,"categoria":"um advérbio de modo","palavra":"depressa"},{"pos":10,"categoria":"um lugar","palavra":"casa"}],"blocos":["Zaqueu, desce depressa,","porque hoje me convém pousar em tua casa."]},{"id":"vj-022","ref":"João 13:34","texto":"Um novo mandamento vos dou: Que vos ameis uns aos outros; como eu vos amei a vós, que também vós uns aos outros vos ameis.","dificuldade":3,"modos":["maluco","quem","ordem"],"quem_disse":{"personagem":"Jesus","a_quem":"aos discípulos","contexto":"No cenáculo, depois de lavar-lhes os pés e de Judas ter saído.","distratores":{"facil":["Moisés","Davi","Salomão"],"medio":["Paulo","Pedro","João, o discípulo"],"dificil":["João, o discípulo","Paulo","Pedro"]}},"lacunas":[{"pos":1,"categoria":"um adjetivo","palavra":"novo"}],"blocos":["Um novo mandamento vos dou:","Que vos ameis uns aos outros;","como eu vos amei a vós,","que também vós uns aos outros vos ameis."]},{"id":"vj-023","ref":"João 14:6","texto":"Eu sou o caminho, e a verdade, e a vida; ninguém vem ao Pai, senão por mim.","dificuldade":1,"modos":["maluco","quem","ordem"],"quem_disse":{"personagem":"Jesus","a_quem":"a Tomé","contexto":"No cenáculo, respondendo a quem disse não saber para onde ele ia.","distratores":{"facil":["Moisés","Davi","Elias"],"medio":["Pedro","Paulo","João Batista"],"dificil":["Tomé","Filipe","Pedro"]}},"lacunas":[{"pos":3,"categoria":"um lugar por onde se anda","palavra":"caminho"}],"blocos":["Eu sou o caminho,","e a verdade, e a vida;","ninguém vem ao Pai, senão por mim."]},{"id":"vj-024","ref":"João 3:16","texto":"Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna.","dificuldade":3,"modos":["maluco","quem","ordem"],"quem_disse":{"personagem":"Jesus","a_quem":"a Nicodemos","contexto":"De noite, conversando com um principal dos judeus sobre o novo nascimento.","distratores":{"facil":["Moisés","Davi","Isaías"],"medio":["Paulo","Pedro","João Batista"],"dificil":["Nicodemos","João Batista","Paulo"]}},"lacunas":[{"pos":2,"categoria":"um verbo no passado (ele ___)","palavra":"amou"},{"pos":4,"categoria":"um lugar","palavra":"mundo"},{"pos":27,"categoria":"um adjetivo feminino","palavra":"eterna"}],"blocos":["Porque Deus amou o mundo de tal maneira","que deu o seu Filho unigênito,","para que todo aquele que nele crê não pereça,","mas tenha a vida eterna."]},{"id":"vj-025","ref":"Lucas 22:42","texto":"Pai, se queres, passa de mim este cálice; todavia não se faça a minha vontade, mas a tua.","dificuldade":3,"modos":["maluco","quem","ordem"],"quem_disse":{"personagem":"Jesus","a_quem":"ao Pai","contexto":"No monte das Oliveiras, ajoelhado em oração, pouco antes da prisão.","distratores":{"facil":["Davi","Jó","Jonas"],"medio":["Pedro","Paulo","Estêvão"],"dificil":["Estêvão","Pedro","Paulo"]}},"lacunas":[{"pos":7,"categoria":"um objeto da cozinha","palavra":"cálice"}],"blocos":["Pai, se queres,","passa de mim este cálice;","todavia não se faça a minha vontade,","mas a tua."]},{"id":"vj-026","ref":"Mateus 26:41","texto":"Vigiai e orai, para que não entreis em tentação; na verdade, o espírito está pronto, mas a carne é fraca.","dificuldade":3,"modos":["maluco","quem","ordem"],"quem_disse":{"personagem":"Jesus","a_quem":"a Pedro, Tiago e João","contexto":"No Getsêmani, ao encontrá-los dormindo pela primeira vez.","distratores":{"facil":["Davi","Salomão","Daniel"],"medio":["Paulo","Pedro","Tiago"],"dificil":["Paulo","Pedro","João, o discípulo"]}},"lacunas":[{"pos":19,"categoria":"um adjetivo feminino","palavra":"fraca"}],"blocos":["Vigiai e orai,","para que não entreis em tentação;","na verdade, o espírito está pronto,","mas a carne é fraca."]},{"id":"vj-027","ref":"Lucas 23:34","texto":"Pai, perdoa-lhes, porque não sabem o que fazem.","dificuldade":1,"modos":["quem","ordem"],"quem_disse":{"personagem":"Jesus","a_quem":"ao Pai","contexto":"Na cruz, enquanto os soldados repartiam as suas vestes.","distratores":{"facil":["Davi","Moisés","José do Egito"],"medio":["Estêvão","Pedro","Paulo"],"dificil":["Estêvão","O ladrão da cruz","O centurião"]}},"lacunas":[],"blocos":["Pai, perdoa-lhes,","porque não sabem o que fazem."]},{"id":"vj-028","ref":"Mateus 28:6","texto":"Ele não está aqui, porque já ressuscitou, como havia dito. Vinde, vede o lugar onde o Senhor jazia.","dificuldade":2,"modos":["maluco","quem","ordem"],"quem_disse":{"personagem":"O anjo do Senhor","a_quem":"às mulheres, no sepulcro","contexto":"Na madrugada do primeiro dia da semana, sentado sobre a pedra removida.","distratores":{"facil":["Moisés","Elias","Davi"],"medio":["Pedro","João, o discípulo","Maria Madalena"],"dificil":["Maria Madalena","Pedro","José de Arimateia"]}},"lacunas":[{"pos":13,"categoria":"um lugar","palavra":"lugar"}],"blocos":["Ele não está aqui,","porque já ressuscitou, como havia dito.","Vinde, vede o lugar onde o Senhor jazia."]},{"id":"vj-029","ref":"João 20:28","texto":"Senhor meu, e Deus meu!","dificuldade":1,"modos":["quem"],"quem_disse":{"personagem":"Tomé","a_quem":"a Jesus","contexto":"Oito dias depois da ressurreição, ao ver as marcas dos cravos.","distratores":{"facil":["Moisés","Davi","Abraão"],"medio":["Pedro","João Batista","Paulo"],"dificil":["Pedro","Natanael","João, o discípulo"]}},"lacunas":[],"blocos":[]},{"id":"vj-030","ref":"Mateus 28:19","texto":"Portanto ide, fazei discípulos de todas as nações, batizando-os em nome do Pai, e do Filho, e do Espírito Santo.","dificuldade":3,"modos":["maluco","quem","ordem"],"quem_disse":{"personagem":"Jesus","a_quem":"aos onze discípulos","contexto":"Num monte da Galileia, depois da ressurreição.","distratores":{"facil":["Moisés","Josué","Elias"],"medio":["Paulo","Pedro","Tiago"],"dificil":["Pedro","Paulo","Um anjo"]}},"lacunas":[{"pos":7,"categoria":"um grupo no plural","palavra":"nações"}],"blocos":["Portanto ide,","fazei discípulos de todas as nações,","batizando-os em nome do Pai,","e do Filho, e do Espírito Santo."]}];
+</script>
+<script>
+const $ = s => document.querySelector(s);
+const app = $("#app");
+let versiculos = [], demo = false, perfil = null, progresso = {};
 
-const CATEGORIAS = ["um animal","uma comida","um lugar","um lugar da sua cidade","uma profissão",
-  "uma profissão no plural","uma parte do corpo","uma peça de roupa","um objeto da cozinha",
-  "um objeto que existe na sua casa","um móvel","uma cor","um número","um nome da nossa família",
-  "um adjetivo","um adjetivo feminino","um adjetivo no plural","um verbo no passado (ele ___)",
-  "um advérbio de modo","uma sensação","uma qualidade","um período do dia","um dia da semana",
-  "um grupo no plural","algo que ilumina","algo escuro"];
+/* ---------- utilidades ---------- */
 const PONT = `.,;:!?"“”‘’()—`;
+const limpo = p => { let a=0,b=p.length; while(a<b&&PONT.includes(p[a]))a++; while(b>a&&PONT.includes(p[b-1]))b--; return p.slice(a,b); };
+function baralho(a) {
+  const c = a.slice();
+  for (let i = c.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [c[i], c[j]] = [c[j], c[i]]; }
+  return c;
+}
+function baralhoDiferente(a) {
+  if (a.length < 2) return a.slice();
+  let c, n = 0;
+  do { c = baralho(a); n++; } while (n < 12 && c.every((x, i) => x === a[i]));
+  return c;
+}
+const chave = () => `pv_${perfil}`;
+function salvar() { try { localStorage.setItem(chave(), JSON.stringify(progresso)); } catch (e) {} }
+function carregar() { try { progresso = JSON.parse(localStorage.getItem(chave()) || "{}"); } catch (e) { progresso = {}; } }
 
-let sb = null, bib = null, jornadas = [], versoes = [], livros = [], lista = [], filtro = "todos";
-let atual = null;   // registro em edição
-let palavras = [], lacunas = new Map(), cortes = new Set();
+/* ---------- som e toque ---------- */
+let ctx = null;
+function bip(freq, dur) {
+  try {
+    ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = "sine"; o.frequency.value = freq;
+    g.gain.setValueAtTime(.09, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + dur);
+    o.connect(g); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime + dur);
+  } catch (e) {}
+}
+const somCerto = () => { bip(660, .12); setTimeout(() => bip(880, .16), 90); if (navigator.vibrate) navigator.vibrate(18); };
+const somErro  = () => { bip(180, .18); if (navigator.vibrate) navigator.vibrate([12, 60, 12]); };
 
-const $ = id => document.getElementById(id);
-const limpar = p => { let a=0,b=p.length; while(a<b&&PONT.includes(p[a]))a++; while(b>a&&PONT.includes(p[b-1]))b--; return p.slice(a,b); };
-const toast = m => { const t=$("toast"); t.textContent=m; t.classList.add("on"); setTimeout(()=>t.classList.remove("on"),2200); };
-
-/* ---------- conexão ---------- */
-$("btConectar").onclick = entrar;
-$("cfgSenha").onkeydown = e => { if (e.key === "Enter") entrar(); };
-$("btSair").onclick = async () => { if (sb) await sb.auth.signOut(); location.reload(); };
-
-async function retomarSessao() {
-  const salvo = JSON.parse(localStorage.getItem("pv_cfg") || "null");
-  if (!salvo) return;
-  $("cfgUrl").value = salvo.url; $("cfgKey").value = salvo.key;
-  $("cfgEmail").value = salvo.email || "";
-  $("cfgBibUrl").value = salvo.bUrl || ""; $("cfgBibKey").value = salvo.bKey || "";
-  sb = createClient(salvo.url, salvo.key);
-  const { data } = await sb.auth.getSession();
-  if (data.session) await iniciar(); else $("cfgSenha").focus();
+/* ---------- dados ---------- */
+async function buscarVersiculos() {
+  if (!CFG.URL || !CFG.KEY) { demo = true; return DEMO; }
+  try {
+    const r = await fetch(`${CFG.URL}/rest/v1/pv_jogo?jornada_id=eq.${CFG.JORNADA}&select=*`,
+      { headers: { apikey: CFG.KEY, Authorization: "Bearer " + CFG.KEY } });
+    if (!r.ok) throw new Error(r.status);
+    const d = await r.json();
+    if (!d.length) throw new Error("vazio");
+    return d;
+  } catch (e) { demo = true; return DEMO; }
 }
 
-async function entrar() {
-  const url = $("cfgUrl").value.trim(), key = $("cfgKey").value.trim();
-  const email = $("cfgEmail").value.trim(), senha = $("cfgSenha").value;
-  const bUrl = $("cfgBibUrl").value.trim(), bKey = $("cfgBibKey").value.trim();
-  if (!url || !key || !email || !senha) { toast("Preencha os quatro campos de cima."); return; }
-  sb = createClient(url, key);
-  const { error } = await sb.auth.signInWithPassword({ email, password: senha });
-  if (error) { toast("Não entrou: " + error.message); return; }
-  localStorage.setItem("pv_cfg", JSON.stringify({ url, key, email, bUrl, bKey }));
-  $("cfgSenha").value = "";
-  await iniciar();
+/* ---------- telas ---------- */
+function topo(titulo, voltarPara) {
+  return `<div class="topo">
+    ${voltarPara ? `<button class="voltar" onclick="${voltarPara}" aria-label="Voltar">‹</button>` : ""}
+    <h1>${titulo}</h1>
+    ${perfil ? `<div class="eu" onclick="telaPerfis()"><span class="bolinha">${perfil[0].toUpperCase()}</span>${perfil}</div>` : ""}
+  </div>`;
 }
 
-async function iniciar() {
-  const { data, error } = await sb.from("pv_jornadas").select("id,nome").order("ordem");
-  if (error) { toast("Erro ao carregar jornadas: " + error.message); return; }
-  jornadas = data;
-  $("jornada").innerHTML = data.map(j => `<option value="${j.id}">${j.nome}</option>`).join("");
-  const { data: u } = await sb.auth.getUser();
-  $("estado").textContent = u?.user?.email || "conectado"; $("estado").className = "on";
-  $("btSair").classList.remove("oculto");
-  $("config").classList.add("oculto"); $("app").classList.remove("oculto");
-  await ligarBiblia();
-  await carregarLista();
+function telaPerfis() {
+  let nomes = [];
+  try { nomes = JSON.parse(localStorage.getItem("pv_perfis") || "[]"); } catch (e) {}
+  app.innerHTML = `<div class="topo"><h1>Palavra <span>Viva</span></h1></div>
+    <p class="dica">Quem vai jogar agora?</p>
+    ${nomes.map(n => `<button class="cartao" onclick="entrar('${n.replace(/'/g, "\\'")}')">
+        <b>${n}</b><small>continuar de onde parou</small></button>`).join("")}
+    <input class="campo" id="novoNome" placeholder="Escrever um nome novo" maxlength="14">
+    <div class="barra"><button class="bt" onclick="criarPerfil()">Começar</button></div>`;
+}
+function criarPerfil() {
+  const n = $("#novoNome").value.trim();
+  if (!n) return;
+  let nomes = [];
+  try { nomes = JSON.parse(localStorage.getItem("pv_perfis") || "[]"); } catch (e) {}
+  if (!nomes.includes(n)) nomes.push(n);
+  localStorage.setItem("pv_perfis", JSON.stringify(nomes));
+  entrar(n);
+}
+function entrar(n) { perfil = n; carregar(); telaInicio(); }
+
+const MODOS = [
+  { id: "maluco", nome: "Versículo maluco", sub: "Complete às cegas e ria do resultado", cor: "var(--maluco)", sinal: "✎" },
+  { id: "quem",   nome: "Quem disse?",      sub: "Descubra a voz por trás da frase",     cor: "var(--quem)",   sinal: "?" },
+  { id: "ordem",  nome: "Palavras em ordem",sub: "Reconstrua o versículo, palavra a palavra", cor: "var(--ordem)", sinal: "⁙" }
+];
+
+function estrelasDe(modo) {
+  const e = progresso[modo]?.estrelas || 0;
+  return `<div class="estrelas">${"★".repeat(e)}<span class="off">${"★".repeat(Math.max(0, 3 - e))}</span></div>`;
 }
 
-/* ---------- banco da Bíblia ---------- */
-async function ligarBiblia() {
-  const c = JSON.parse(localStorage.getItem("pv_cfg") || "{}");
-  if (!c.bUrl || !c.bKey) { $("versao").innerHTML = `<option>—</option>`; return; }
-  bib = createClient(c.bUrl, c.bKey, { db: { schema: "biblia" } });
-
-  const { data: vs, error: e1 } = await bib.from("versoes").select("*");
-  if (e1) { toast("Bíblia: " + e1.message); bib = null; return; }
-  versoes = vs;
-  $("versao").innerHTML = vs.map(v =>
-    `<option value="${v.id}" ${v.sigla === "BLIVRE" ? "selected" : ""}>${v.sigla}</option>`).join("");
-
-  const { data: lv } = await bib.from("livros").select("*");
-  livros = (lv || []).map(l => {
-    const id = l.id ?? l.livro_id ?? l.ordem_canonica;
-    const nomes = Object.values(l).filter(x => typeof x === "string" && x.length > 1).map(nz);
-    return { id, nomes };
-  });
+function telaInicio() {
+  const conta = m => versiculos.filter(v => v.modos.includes(m)).length;
+  app.innerHTML = topo("Palavra <span>Viva</span>") +
+    (demo ? `<div class="aviso">Jogando com os versículos guardados no aparelho — o banco não respondeu agora.</div>` : "") +
+    `<p class="dica">Jornada: Vida de Jesus</p>` +
+    MODOS.map(m => `<button class="cartao" onclick="comecar('${m.id}')">
+        <div class="selo" style="background:${m.cor}">${m.sinal}</div>
+        <b>${m.nome}</b><small>${m.sub} · ${conta(m.id)} versículos</small>
+        ${estrelasDe(m.id)}
+      </button>`).join("") +
+    `<p class="dica" style="margin-top:18px">Versículos aprendidos: ${(progresso.aprendidos || []).length}</p>`;
 }
 
-function nz(s) {
-  return String(s).normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase().replace(/[^a-z0-9]/g, "");
+/* ---------- motor da partida ---------- */
+let jogo = null;
+
+function comecar(modo) {
+  const pool = versiculos.filter(v => v.modos.includes(modo));
+  if (!pool.length) { app.innerHTML = topo("", "telaInicio()") + `<p class="dica">Nenhum versículo disponível para este modo ainda.</p>`; return; }
+  let fila = baralho(pool).slice(0, 5);
+  if (modo === "quem") fila = espalharPersonagens(fila);
+  jogo = { modo, fila, i: 0, pontos: 0, dicas: 0 };
+  rodada();
 }
 
-function lerRef(ref) {
-  const m = ref.trim().match(/^(.+?)\s+(\d+)\s*[:.]\s*(\d+)$/);
-  if (!m) return null;
-  const alvo = nz(m[1]);
-  let livro = livros.find(l => l.nomes.includes(alvo));
-  if (!livro) livro = livros.find(l => l.nomes.some(n => n.startsWith(alvo) && alvo.length >= 3));
-  if (!livro) return null;
-  return { livro_id: livro.id, capitulo: +m[2], versiculo: +m[3] };
-}
-
-async function buscarTexto(ref) {
-  if (!bib) return { erro: "Banco da Bíblia não configurado." };
-  const p = lerRef(ref);
-  if (!p) return { erro: "Não entendi a referência." };
-  const { data, error } = await bib.from("versiculos").select("texto")
-    .eq("versao_id", +$("versao").value).eq("livro_id", p.livro_id)
-    .eq("capitulo", p.capitulo).eq("versiculo", p.versiculo).limit(1);
-  if (error) return { erro: error.message };
-  if (!data.length) return { erro: "Versículo não encontrado nessa versão." };
-  return { texto: data[0].texto.trim().replace(/\s+/g, " ") };
-}
-
-$("btBuscar").onclick = async () => {
-  const r = await buscarTexto($("ref").value);
-  if (r.erro) { toast(r.erro); return; }
-  const antigas = [...lacunas.values()], palavrasAntigas = [...lacunas.keys()].map(i => palavras[i]);
-  $("texto").value = r.texto;
-  palavras = r.texto.split(" ");
-  lacunas = new Map(); cortes = new Set();
-  palavrasAntigas.forEach((p, k) => {
-    const alvo = nz(limpar(p || ""));
-    const i = palavras.findIndex((w, j) => nz(limpar(w)) === alvo && !lacunas.has(j));
-    if (i >= 0) lacunas.set(i, antigas[k]);
-  });
-  $("btAuto").click();
-  toast("Texto trazido da " + $("versao").selectedOptions[0].textContent + ".");
-};
-
-/* ---------- atualização em lote ---------- */
-$("btLote").onclick = async () => {
-  if (!bib) { toast("Configure o banco da Bíblia para usar isto."); return; }
-  const alvos = lista.filter(v => !v.aprovado);
-  if (!alvos.length) { toast("Nenhum rascunho para atualizar."); return; }
-  if (!confirm(`Trazer da ${$("versao").selectedOptions[0].textContent} o texto de ${alvos.length} versículo(s)?`)) return;
-
-  const linhas = [];
-  for (const v of alvos) {
-    const r = await buscarTexto(v.ref);
-    if (r.erro) { linhas.push([v.ref, r.erro, false]); continue; }
-    const pal = r.texto.split(" ");
-    const novas = [], perdidas = [];
-    (v.lacunas || []).forEach(l => {
-      const alvo = nz(l.palavra);
-      const i = pal.findIndex((w, j) => nz(limpar(w)) === alvo && !novas.some(n => n.pos === j));
-      if (i >= 0) novas.push({ pos: i, categoria: l.categoria, palavra: limpar(pal[i]), original: pal[i] });
-      else perdidas.push(l.palavra);
-    });
-    const blocos = [];
-    let atualB = [], desde = 0;
-    pal.forEach((p, i) => {
-      atualB.push(p);
-      const fim = p[p.length - 1];
-      if (i < pal.length - 1 && ",;:.".includes(fim) && i - desde >= 3) { blocos.push(atualB.join(" ")); atualB = []; desde = i; }
-    });
-    if (atualB.length) blocos.push(atualB.join(" "));
-
-    const { error } = await sb.from("pv_versiculos").update({
-      texto: r.texto, lacunas: novas,
-      blocos: v.modos.includes("ordem") ? blocos : []
-    }).eq("id", v.id);
-    linhas.push([v.ref, error ? error.message
-      : (perdidas.length ? "atualizado; conferir lacuna: " + perdidas.join(", ") : "atualizado"), !error && !perdidas.length]);
+/* evita duas perguntas seguidas com o mesmo personagem */
+function espalharPersonagens(fila) {
+  for (let i = 1; i < fila.length; i++) {
+    if (fila[i].quem_disse?.personagem === fila[i - 1].quem_disse?.personagem) {
+      const j = fila.findIndex((v, k) => k > i && v.quem_disse?.personagem !== fila[i - 1].quem_disse?.personagem);
+      if (j > 0) [fila[i], fila[j]] = [fila[j], fila[i]];
+    }
   }
-  $("relatorio").innerHTML = `<p class="dica" style="margin-top:12px"><b>Resultado</b></p>` +
-    linhas.map(([r, m, ok]) => `<p class="dica" style="color:${ok ? "var(--ok)" : "#8A6D1F"}">${r} — ${m}</p>`).join("");
-  await carregarLista();
-  toast("Textos atualizados.");
-};
-
-/* ---------- lista ---------- */
-async function carregarLista() {
-  const { data, error } = await sb.from("pv_versiculos")
-    .select("id,ref,texto,aprovado,jornada_id,dificuldade,modos,quem_disse,lacunas,blocos")
-    .order("id");
-  if (error) { toast("Erro ao listar: " + error.message); return; }
-  lista = data; desenharLista();
+  return fila;
 }
 
-function desenharLista() {
-  const vis = lista.filter(v => filtro === "todos" || (filtro === "pendentes" ? !v.aprovado : v.aprovado));
-  $("lista").innerHTML = vis.length ? vis.map(v => `
-    <div class="item ${atual && atual.id === v.id ? "sel" : ""}" data-id="${v.id}">
-      <b>${v.ref}</b><i class="${v.aprovado ? "" : "pend"}">${v.aprovado ? "no jogo" : "conferir"}</i>
-    </div>`).join("")
-    : `<p class="dica">Nada aqui ainda.</p>`;
-  [...$("lista").children].forEach(el => el.onclick = () => abrir(el.dataset.id));
-}
-document.querySelectorAll(".filtros button").forEach(b => b.onclick = () => {
-  filtro = b.dataset.f;
-  document.querySelectorAll(".filtros button").forEach(x => x.classList.toggle("on", x === b));
-  desenharLista();
-});
-
-/* ---------- editor ---------- */
-$("btNovo").onclick = () => { atual = null; limparForm(); desenharLista(); $("ref").focus(); };
-
-function limparForm() {
-  $("ref").value = ""; $("texto").value = ""; $("dif").value = "2";
-  $("mMaluco").checked = $("mQuem").checked = $("mOrdem").checked = true;
-  $("personagem").value = $("aquem").value = $("contexto").value = "";
-  lacunas = new Map(); cortes = new Set();
-  document.querySelectorAll("#dFacil input,#dMedio input,#dDificil input").forEach(i => i.value = "");
-  lerTexto();
+function rodada() {
+  if (jogo.i >= jogo.fila.length) return telaFim();
+  const v = jogo.fila[jogo.i];
+  if (jogo.modo === "ordem") return jogoOrdem(v);
+  if (jogo.modo === "quem") return jogoQuem(v);
+  return jogoMaluco(v);
 }
 
-function abrir(id) {
-  const v = lista.find(x => x.id === id); if (!v) return;
-  atual = v;
-  $("ref").value = v.ref; $("texto").value = v.texto; $("dif").value = v.dificuldade;
-  $("jornada").value = v.jornada_id;
-  $("mMaluco").checked = v.modos.includes("maluco");
-  $("mQuem").checked = v.modos.includes("quem");
-  $("mOrdem").checked = v.modos.includes("ordem");
-  const q = v.quem_disse || {};
-  $("personagem").value = q.personagem || ""; $("aquem").value = q.a_quem || "";
-  $("contexto").value = q.contexto || "";
-  const niveis = { facil: "dFacil", medio: "dMedio", dificil: "dDificil" };
-  Object.entries(niveis).forEach(([nivel, id]) => {
-    const arr = ((q.distratores || {})[nivel]) || [];
-    $(id).querySelectorAll("input").forEach((inp, i) => inp.value = arr[i] || "");
-  });
-  palavras = v.texto.trim().split(/\s+/);
-  lacunas = new Map((v.lacunas || []).map(l => [l.pos, l.categoria]));
-  cortes = new Set(); let n = 0;
-  (v.blocos || []).slice(0, -1).forEach(b => { n += b.trim().split(/\s+/).length; cortes.add(n - 1); });
-  desenhar(); desenharLista(); validar();
+function cabecalhoRodada() {
+  const m = MODOS.find(x => x.id === jogo.modo);
+  return topo(m.nome, "telaInicio()") +
+    `<div class="progresso"><span>Versículo ${jogo.i + 1} de ${jogo.fila.length}</span><span>${jogo.pontos} ponto(s)</span></div>`;
 }
 
-function montarDistratores() {
-  ["dFacil","dMedio","dDificil"].forEach(id => {
-    $(id).innerHTML = [0,1,2].map(() => `<input type="text" placeholder="outro personagem">`).join("");
-    $(id).querySelectorAll("input").forEach(i => i.oninput = validar);
-  });
-}
-montarDistratores();
-
-$("texto").oninput = lerTexto;
-function lerTexto() {
-  const novas = $("texto").value.trim().split(/\s+/).filter(Boolean);
-  if (novas.join(" ") !== palavras.join(" ")) { lacunas = new Map(); cortes = new Set(); }
-  palavras = novas; desenhar(); validar();
+function proxima(ganhou) {
+  if (ganhou) {
+    jogo.pontos++;
+    const v = jogo.fila[jogo.i];
+    progresso.aprendidos = progresso.aprendidos || [];
+    if (!progresso.aprendidos.includes(v.id)) progresso.aprendidos.push(v.id);
+    salvar();
+  }
+  jogo.i++;
+  rodada();
 }
 
-function desenhar() {
-  const lac = $("versoLac"), blc = $("versoBlc");
-  if (!palavras.length) { lac.innerHTML = blc.innerHTML = `<span class="dica">Cole o texto acima.</span>`; $("blocos").innerHTML=""; return; }
+/* ---------- 1. PALAVRAS EM ORDEM ---------- */
+function jogoOrdem(v) {
+  const blocos = (v.blocos && v.blocos.length) ? v.blocos : [v.texto];
+  const alvo = blocos.map(b => b.split(" "));
+  const presas = alvo.map(l => l.map(() => null));
+  const banco = baralhoDiferente(alvo.flat().map((p, i) => ({ p, i })));
+  let usadas = new Set(), dicaUsada = false, tentativas = 0;
 
-  lac.innerHTML = palavras.map((p, i) =>
-    `<span class="pal ${lacunas.has(i) ? "lac" : ""}" data-i="${i}">${p}${
-      lacunas.has(i) ? `<span class="cat">${lacunas.get(i)}</span>` : ""}</span>`).join(" ");
-  lac.querySelectorAll(".pal").forEach(el => el.onclick = () => alternarLacuna(+el.dataset.i));
+  function posicaoGlobal(li, ci) { let n = 0; for (let k = 0; k < li; k++) n += alvo[k].length; return n + ci; }
 
-  blc.innerHTML = palavras.map((p, i) =>
-    `<span class="pal">${p}</span>` + (i < palavras.length - 1
-      ? `<span class="corte ${cortes.has(i) ? "on" : ""}" data-i="${i}">|</span>` : "")).join("");
-  blc.querySelectorAll(".corte").forEach(el => el.onclick = () => {
-    const i = +el.dataset.i; cortes.has(i) ? cortes.delete(i) : cortes.add(i); desenhar(); validar();
-  });
+  function pintar() {
+    app.innerHTML = cabecalhoRodada() +
+      `<span class="ref">${v.ref}</span>
+       <div class="linhas">${alvo.map((linha, li) => `<div class="linha">${
+          linha.map((_, ci) => {
+            const g = presas[li][ci];
+            return g === null ? `<span class="vaga"></span>`
+              : `<button class="ficha ${g.travada ? "presa" : "posta"}" ${g.travada ? "" : `onclick="devolver(${li},${ci})"`}>${g.p}</button>`;
+          }).join("")}</div>`).join("")}</div>
+       <div class="banco">${banco.map((f, k) =>
+          usadas.has(k) ? "" : `<button class="ficha" onclick="colocar(${k})">${f.p}</button>`).join("")}</div>
+       <div class="barra">
+         <button class="bt calmo" onclick="dicaOrdem()">Dica</button>
+         <button class="bt" onclick="conferirOrdem()">Conferir</button>
+       </div>`;
+  }
 
-  const bs = blocos();
-  $("blocos").innerHTML = bs.length > 1 ? bs.map(b =>
-    `<div class="bloco">${b}<span>${b.split(/\s+/).length} palavras</span></div>`).join("") : "";
-}
-
-function blocos() {
-  if (!palavras.length) return [];
-  const out = []; let atualB = [];
-  palavras.forEach((p, i) => { atualB.push(p); if (cortes.has(i)) { out.push(atualB.join(" ")); atualB = []; } });
-  if (atualB.length) out.push(atualB.join(" "));
-  return out;
-}
-
-function alternarLacuna(i) {
-  if (lacunas.has(i)) { lacunas.delete(i); desenhar(); validar(); return; }
-  const sel = document.createElement("select");
-  sel.innerHTML = `<option value="">escolha a categoria…</option>` +
-    CATEGORIAS.map(c => `<option>${c}</option>`).join("") + `<option value="__">outra…</option>`;
-  const alvo = $("versoLac").querySelector(`[data-i="${i}"]`);
-  alvo.replaceChildren(sel); sel.focus();
-  sel.onchange = () => {
-    let c = sel.value;
-    if (c === "__") c = prompt("Como a criança deve preencher esta lacuna?", "um animal") || "";
-    if (c) lacunas.set(i, c);
-    desenhar(); validar();
+  window.colocar = k => {
+    for (let li = 0; li < alvo.length; li++) for (let ci = 0; ci < alvo[li].length; ci++) {
+      if (presas[li][ci] === null) {
+        presas[li][ci] = { p: banco[k].p, k, travada: false };
+        usadas.add(k); bip(520, .06); return pintar();
+      }
+    }
   };
-  sel.onblur = () => setTimeout(() => { if (!lacunas.has(i)) { desenhar(); } }, 120);
-}
+  window.devolver = (li, ci) => { const g = presas[li][ci]; if (!g || g.travada) return; usadas.delete(g.k); presas[li][ci] = null; pintar(); };
 
-$("btAuto").onclick = () => {
-  cortes = new Set(); let desde = 0;
-  palavras.forEach((p, i) => {
-    if (i === palavras.length - 1) return;
-    const fim = p[p.length - 1];
-    if ((fim === "," || fim === ";" || fim === ":" || fim === ".") && i - desde >= 3) { cortes.add(i); desde = i; }
-  });
-  desenhar(); validar();
-};
-
-[$("mMaluco"), $("mQuem"), $("mOrdem"), $("ref"), $("personagem"), $("aquem"), $("contexto")]
-  .forEach(el => el.oninput = el.onchange = validar);
-
-/* ---------- validação ---------- */
-function distratores(nivel) {
-  const id = { facil: "dFacil", medio: "dMedio", dificil: "dDificil" }[nivel];
-  return [...$(id).querySelectorAll("input")].map(i => i.value.trim()).filter(Boolean);
-}
-function modos() {
-  return [$("mMaluco").checked && "maluco", $("mQuem").checked && "quem", $("mOrdem").checked && "ordem"].filter(Boolean);
-}
-
-function validar() {
-  const erros = [], avisos = [], m = modos();
-  if (!$("ref").value.trim()) erros.push("Falta a referência.");
-  if (!palavras.length) erros.push("Falta o texto do versículo.");
-  if (!m.length) erros.push("Escolha ao menos um modo de jogo.");
-
-  if (m.includes("maluco")) {
-    if (!lacunas.size) erros.push("O Versículo maluco precisa de pelo menos uma lacuna.");
-    if (lacunas.size > 4) avisos.push("Mais de quatro lacunas deixam o versículo irreconhecível.");
-  }
-  if (m.includes("ordem")) {
-    const bs = blocos();
-    if (palavras.length < 5) erros.push("Texto curto demais para embaralhar — desmarque Palavras em ordem.");
-    const maior = bs.reduce((a, b) => Math.max(a, b.split(/\s+/).length), 0);
-    if (maior > 10) avisos.push(`Há um bloco com ${maior} palavras; acima de dez trava no celular.`);
-  }
-  if (m.includes("quem")) {
-    if (!$("personagem").value.trim()) erros.push("Diga quem falou.");
-    ["facil", "medio", "dificil"].forEach(n => {
-      const d = distratores(n), nome = { facil: "Fácil", medio: "Médio", dificil: "Difícil" }[n];
-      if (d.length !== 3) erros.push(`${nome}: faltam ${3 - d.length} personagem(ns).`);
-      if (new Set(d).size !== d.length) erros.push(`${nome}: há nome repetido.`);
-      if (d.includes($("personagem").value.trim())) erros.push(`${nome}: repete quem realmente falou.`);
-    });
-    if (!$("contexto").value.trim()) avisos.push("Sem contexto, a resposta não ensina nada depois do acerto.");
-  }
-
-  const av = $("aviso");
-  if (erros.length) {
-    av.className = "ruim";
-    av.innerHTML = "Falta resolver:<ul>" + erros.map(e => `<li>${e}</li>`).join("") + "</ul>";
-  } else if (avisos.length) {
-    av.className = "morno";
-    av.innerHTML = "Pode salvar, mas repare:<ul>" + avisos.map(e => `<li>${e}</li>`).join("") + "</ul>";
-  } else if (palavras.length) {
-    av.className = "bom"; av.textContent = "Tudo certo para entrar no jogo.";
-  } else { av.className = ""; av.textContent = ""; }
-  return erros.length === 0;
-}
-
-/* ---------- salvar ---------- */
-async function salvar(aprovado) {
-  if (!validar()) { toast("Resolva os pontos em vermelho."); return; }
-  const m = modos(), texto = palavras.join(" ");
-  const registro = {
-    id: atual ? atual.id : await novoId(),
-    jornada_id: $("jornada").value,
-    ref: $("ref").value.trim(),
-    texto, dificuldade: +$("dif").value, modos: m,
-    lacunas: [...lacunas.entries()].sort((a, b) => a[0] - b[0])
-      .map(([pos, categoria]) => ({ pos, categoria, palavra: limpar(palavras[pos]), original: palavras[pos] })),
-    blocos: m.includes("ordem") ? blocos() : [],
-    quem_disse: m.includes("quem") ? {
-      personagem: $("personagem").value.trim(),
-      a_quem: $("aquem").value.trim(),
-      contexto: $("contexto").value.trim(),
-      distratores: { facil: distratores("facil"), medio: distratores("medio"), dificil: distratores("dificil") }
-    } : null,
-    aprovado
+  window.dicaOrdem = () => {
+    dicaUsada = true;
+    for (let li = 0; li < alvo.length; li++) for (let ci = 0; ci < alvo[li].length; ci++) {
+      if (presas[li][ci] === null || presas[li][ci].p !== alvo[li][ci]) {
+        if (presas[li][ci]) { usadas.delete(presas[li][ci].k); }
+        const k = banco.findIndex((f, idx) => f.p === alvo[li][ci] && !usadas.has(idx));
+        if (k < 0) return;
+        presas[li][ci] = { p: banco[k].p, k, travada: true };
+        usadas.add(k); bip(760, .1); return pintar();
+      }
+    }
   };
-  const { error } = await sb.from("pv_versiculos").upsert(registro);
-  if (error) { toast("Não salvou: " + error.message); return; }
-  toast(aprovado ? "Liberado para o jogo." : "Rascunho salvo.");
-  await carregarLista();
-  atual = lista.find(v => v.id === registro.id) || null;
-  desenharLista();
+
+  window.conferirOrdem = () => {
+    if (presas.flat().some(g => g === null)) { return sacudir(); }
+    tentativas++;
+    let tudoCerto = true;
+    presas.forEach((linha, li) => linha.forEach((g, ci) => {
+      if (g.p === alvo[li][ci]) g.travada = true;
+      else { tudoCerto = false; usadas.delete(g.k); presas[li][ci] = null; }
+    }));
+    if (tudoCerto) { somCerto(); return telaAcerto(v, !dicaUsada && tentativas === 1); }
+    somErro(); pintar();
+  };
+
+  function sacudir() { const el = document.querySelector(".linhas"); el.animate([{transform:"translateX(0)"},{transform:"translateX(-6px)"},{transform:"translateX(6px)"},{transform:"translateX(0)"}], 220); }
+  pintar();
 }
 
-async function novoId() {
-  const pref = $("jornada").value.split("-").map(p => p[0]).join("");
-  const usados = lista.filter(v => v.id.startsWith(pref + "-")).map(v => +v.id.split("-")[1] || 0);
-  return `${pref}-${String((usados.length ? Math.max(...usados) : 0) + 1).padStart(3, "0")}`;
+/* ---------- 2. QUEM DISSE ---------- */
+function jogoQuem(v) {
+  const nivel = v.dificuldade === 1 ? "facil" : v.dificuldade === 2 ? "medio" : "dificil";
+  const certo = v.quem_disse.personagem;
+  const opcoes = baralho([certo, ...(v.quem_disse.distratores[nivel] || [])]);
+  app.innerHTML = cabecalhoRodada() +
+    `<div class="verso serif">${v.texto}</div>
+     <p class="dica">Quem falou estas palavras?</p>
+     <div class="opcoes">${opcoes.map((o, k) =>
+        `<button class="opcao" id="op${k}" onclick="responder(${k})">${o}</button>`).join("")}</div>`;
+  window.responder = k => {
+    const acertou = opcoes[k] === certo;
+    opcoes.forEach((o, j) => {
+      const el = document.getElementById("op" + j);
+      el.onclick = null;
+      if (o === certo) el.className = "opcao certa";
+      else if (j === k) el.className = "opcao errada";
+    });
+    acertou ? somCerto() : somErro();
+    setTimeout(() => telaContexto(v, acertou), 700);
+  };
 }
 
-$("btSalvar").onclick = () => salvar(false);
-$("btAprovar").onclick = () => salvar(true);
-$("btExcluir").onclick = async () => {
-  if (!atual) { toast("Nenhum versículo aberto."); return; }
-  if (!confirm(`Excluir ${atual.ref} de vez?`)) return;
-  const { error } = await sb.from("pv_versiculos").delete().eq("id", atual.id);
-  if (error) { toast("Não excluiu: " + error.message); return; }
-  atual = null; limparForm(); await carregarLista(); toast("Excluído.");
-};
+function telaContexto(v, acertou) {
+  const q = v.quem_disse;
+  app.innerHTML = cabecalhoRodada() +
+    `<div class="verso serif">${v.texto}<br><span class="ref" style="margin-top:12px">${v.ref}</span></div>
+     <div class="contexto"><b>${q.personagem}</b>${q.a_quem ? ", " + q.a_quem : ""}.<br>${q.contexto || ""}</div>
+     <div class="barra"><button class="bt" onclick="proxima(${acertou})">Continuar</button></div>`;
+}
 
-lerTexto();
-retomarSessao();
+/* ---------- 3. VERSÍCULO MALUCO ---------- */
+function jogoMaluco(v) {
+  const lac = v.lacunas.slice().sort((a, b) => a.pos - b.pos);
+  const dadas = [];
+  let etapa = 0;
+
+  function perguntar() {
+    if (etapa >= lac.length) return mostrarMaluco();
+    app.innerHTML = cabecalhoRodada() +
+      `<p class="dica">Sem espiar o versículo! Escreva ${lac.length} palavras e veja no que dá.</p>
+       <div class="cartao" style="cursor:default"><b>${etapa + 1}ª palavra</b>
+         <small>Escreva ${lac[etapa].categoria}</small></div>
+       <input class="campo" id="pal" maxlength="22" autocomplete="off" placeholder="sua palavra">
+       <div class="barra"><button class="bt" onclick="enviarPalavra()">Pronto</button></div>`;
+    const c = $("#pal");
+    c.focus();
+    c.onkeydown = e => { if (e.key === "Enter") enviarPalavra(); };
+  }
+  window.enviarPalavra = () => {
+    const p = $("#pal").value.trim();
+    if (!p) return $("#pal").focus();
+    dadas.push(p); etapa++; bip(600, .07); perguntar();
+  };
+
+  function versaoCom(trocas) {
+    const pal = v.texto.split(" ");
+    lac.forEach((l, i) => {
+      if (trocas[i] === undefined) return;
+      const orig = pal[l.pos];
+      const cauda = orig.slice(limpo(orig).length);
+      pal[l.pos] = trocas[i] + cauda;
+    });
+    return pal.join(" ");
+  }
+
+  function mostrarMaluco() {
+    app.innerHTML = cabecalhoRodada() +
+      `<span class="ref">${v.ref} — versão maluca</span>
+       <div class="verso serif" id="alvo">${versaoCom(dadas)}</div>
+       <div class="barra"><button class="bt" onclick="revelar()">Ver como é de verdade</button></div>`;
+  }
+
+  window.revelar = () => {
+    let i = 0;
+    const passo = () => {
+      const parcial = dadas.slice();
+      for (let k = 0; k <= i && k < lac.length; k++) parcial[k] = limpo(v.texto.split(" ")[lac[k].pos]);
+      $("#alvo").innerHTML = versaoCom(parcial);
+      bip(700 + i * 60, .1);
+      i++;
+      if (i <= lac.length) setTimeout(passo, 620); else setTimeout(fixar, 700);
+    };
+    $(".barra").innerHTML = "";
+    passo();
+  };
+
+  function fixar() {
+    const alvoPal = lac.map(l => limpo(v.texto.split(" ")[l.pos]));
+    let k = 0, erros = 0;
+    const perguntaFixa = () => {
+      if (k >= lac.length) return telaAcerto(v, erros === 0);
+      const outras = v.texto.split(" ").map(limpo).filter(p => p.length > 3 && p !== alvoPal[k]);
+      const ops = baralho([alvoPal[k], ...baralho(outras).slice(0, 2)]);
+      app.innerHTML = cabecalhoRodada() +
+        `<span class="ref">${v.ref}</span>
+         <div class="verso serif">${v.texto.split(" ").map((p, idx) =>
+            idx === lac[k].pos ? `<b style="color:#8A6D1F">______</b>` : p).join(" ")}</div>
+         <p class="dica">Qual era a palavra certa?</p>
+         <div class="opcoes">${ops.map((o, j) =>
+            `<button class="opcao" id="fx${j}" onclick="fixarResp(${j})">${o}</button>`).join("")}</div>`;
+      window.fixarResp = j => {
+        const ok = ops[j] === alvoPal[k];
+        if (!ok) erros++;
+        ops.forEach((o, z) => {
+          const el = document.getElementById("fx" + z); el.onclick = null;
+          if (o === alvoPal[k]) el.className = "opcao certa"; else if (z === j) el.className = "opcao errada";
+        });
+        ok ? somCerto() : somErro();
+        k++; setTimeout(perguntaFixa, 800);
+      };
+    };
+    perguntaFixa();
+  }
+
+  perguntar();
+}
+
+/* ---------- fim de rodada ---------- */
+function telaAcerto(v, semAjuda) {
+  app.innerHTML = cabecalhoRodada() +
+    `<div class="fim"><h2>${semAjuda ? "De primeira!" : "Chegou lá."}</h2>
+      <div class="verso serif" style="text-align:left;margin-top:16px">
+        <span class="ref">${v.ref}</span>${v.texto}</div>
+      <div class="barra"><button class="bt" onclick="proxima(true)">Continuar</button></div></div>`;
+}
+
+function telaFim() {
+  const e = jogo.pontos >= 5 ? 3 : jogo.pontos >= 4 ? 2 : jogo.pontos >= 2 ? 1 : 0;
+  const ant = progresso[jogo.modo]?.estrelas || 0;
+  progresso[jogo.modo] = { estrelas: Math.max(ant, e) };
+  salvar();
+  app.innerHTML = topo("Fim da rodada", "telaInicio()") +
+    `<div class="fim">
+      <div class="grandes">${"★".repeat(e)}<span style="color:#3D4869">${"★".repeat(3 - e)}</span></div>
+      <h2>${jogo.pontos} de ${jogo.fila.length}</h2>
+      <p class="dica">${e === 3 ? "Rodada perfeita." : "Jogue de novo para melhorar."}</p>
+      <div class="barra" style="margin-top:20px">
+        <button class="bt calmo" onclick="telaInicio()">Voltar</button>
+        <button class="bt" onclick="comecar('${jogo.modo}')">Jogar outra</button>
+      </div></div>`;
+}
+
+/* ---------- partida ---------- */
+(async function () {
+  app.innerHTML = `<div class="topo"><h1>Palavra <span>Viva</span></h1></div><p class="dica">Abrindo…</p>`;
+  versiculos = await buscarVersiculos();
+  telaPerfis();
+})();
 </script>
 </body>
 </html>
