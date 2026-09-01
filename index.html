@@ -106,7 +106,7 @@ legend{font-size:12px;font-weight:600;color:var(--tinta-2);padding:0 6px}
 <body>
 
 <header>
-  <h1>Palavra <span>Viva</span> — cadastro</h1>
+  <h1>Palavra <span>Viva</span> — cadastro <small style="font-family:-apple-system,sans-serif;font-size:11px;font-weight:400;color:#7D8AA3;letter-spacing:0">v. 01/09 18h50</small></h1>
   <div style="display:flex;align-items:center;gap:14px">
     <div id="estado">desconectado</div>
     <button id="btSair" class="sec mini oculto">Sair</button>
@@ -240,12 +240,23 @@ window.onerror = function (msg, arq, lin) {
   f.style.display = "block";
   f.textContent = "A página encontrou um problema: " + msg + " (linha " + lin + ")";
 };
+if (location.protocol === "file:") {
+  document.getElementById("falha").style.display = "block";
+  document.getElementById("falha").textContent =
+    "Esta página precisa ser aberta por um endereço https (GitHub Pages). Aberta direto do disco, o navegador bloqueia o login.";
+}
 if (!window.supabase || !window.supabase.createClient) {
   document.getElementById("falha").style.display = "block";
   document.getElementById("falha").textContent =
     "Não consegui carregar a biblioteca do Supabase. Verifique a conexão com a internet e recarregue a página.";
 }
-var createClient = window.supabase ? window.supabase.createClient : null;
+var _criar = window.supabase ? window.supabase.createClient : null;
+var _clientes = {};
+function createClient(url, key, opts) {
+  var chave = url + "|" + ((opts && opts.db && opts.db.schema) || "public");
+  if (!_clientes[chave]) _clientes[chave] = _criar(url, key, opts);
+  return _clientes[chave];
+}
 
 const CATEGORIAS = ["um animal","uma comida","um lugar","um lugar da sua cidade","uma profissão",
   "uma profissão no plural","uma parte do corpo","uma peça de roupa","um objeto da cozinha",
