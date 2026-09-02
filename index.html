@@ -109,8 +109,8 @@ h1,h2,h3{font-family:Cinzel,serif;font-weight:600;margin:0}
 <script>
 /* ====== CONFIGURAÇÃO — cole os dados do projeto do jogo ====== */
 const CFG = {
-  URL: "",            // ex.: https://bypmcnwkxxhqcbrpzefk.supabase.co
-  KEY: ""             // chave publicável (sb_publishable_...)
+  URL: "https://bypmcnwkxxhqcbrpzefk.supabase.co",            // ex.: https://bypmcnwkxxhqcbrpzefk.supabase.co
+  KEY: "sb_publishable_9NqLWvtLWenNbiVgRUgp4w_tjcp7tjo"             // chave publicável (sb_publishable_...)
 };
 /* ============================================================ */
 </script>
@@ -157,7 +157,7 @@ const somErro  = () => { bip(180, .18); if (navigator.vibrate) navigator.vibrate
 
 /* ---------- dados ---------- */
 async function buscarVersiculos() {
-  if (!CFG.URL || !CFG.KEY) { demo = true; return DEMO; }
+  if (!CFG.URL || !CFG.KEY) { demo = true; return comJornada(DEMO); }
   try {
     const r = await fetch(`${CFG.URL}/rest/v1/pv_jogo?select=*`,
       { headers: { apikey: CFG.KEY, Authorization: "Bearer " + CFG.KEY } });
@@ -165,11 +165,10 @@ async function buscarVersiculos() {
     const d = await r.json();
     if (!d.length) throw new Error("vazio");
     return d;
-  } catch (e) {
-    demo = true;
-    return DEMO.map(v => ({ ...v, jornada_id: "vida-de-jesus", jornada: "Vida de Jesus" }));
-  }
+  } catch (e) { demo = true; return comJornada(DEMO); }
 }
+
+const comJornada = lst => lst.map(v => ({ ...v, jornada_id: "vida-de-jesus", jornada: "Vida de Jesus" }));
 
 /* ---------- telas ---------- */
 function topo(titulo, voltarPara) {
@@ -233,7 +232,9 @@ function telaInicio() {
   const nomeJ = (js.find(j => j.id === jornadaAtual) || {}).nome || "";
 
   app.innerHTML = topo("Palavra <span>Viva</span>") +
-    (demo ? `<div class="aviso">Jogando com os versículos guardados no aparelho — o banco não respondeu agora.</div>` : "") +
+    (demo ? `<div class="aviso">${(!CFG.URL || !CFG.KEY)
+        ? "Jogando com os 30 versículos embutidos. Para usar o banco, preencha URL e KEY no início do arquivo."
+        : "Jogando com os versículos guardados no aparelho — o banco não respondeu agora."}</div>` : "") +
     (js.length > 1 ? `<div class="jornadas">${js.map(j =>
         `<button class="chip ${j.id === jornadaAtual ? "on" : ""}" onclick="trocarJornada('${j.id}')">${j.nome}</button>`).join("")}</div>`
       : `<p class="dica">Jornada: ${nomeJ}</p>`) +
