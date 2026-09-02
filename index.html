@@ -60,6 +60,7 @@ h1,h2,h3{font-family:Cinzel,serif;font-weight:600;margin:0}
 .chip{background:var(--navy2);border:1px solid var(--linha);color:#A7B2CA;border-radius:20px;
   padding:7px 14px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer}
 .chip.on{background:var(--ouro);border-color:var(--ouro);color:#2A2205}
+.chip.mix{border-style:dashed}
 .verso{font-family:"Cormorant Garamond",serif;font-size:25px;line-height:1.6;
   background:var(--papel);color:var(--tinta);border-radius:14px;padding:18px 18px;margin-bottom:16px}
 .ref{font-family:Nunito,sans-serif;font-size:12px;font-weight:700;color:var(--ouro);
@@ -117,7 +118,7 @@ const CFG = {
   URL: "https://bypmcnwkxxhqcbrpzefk.supabase.co",
   KEY: "sb_publishable_9NqLWvtLWenNbiVgRUgp4w_tjcp7tjo"
 };
-const VERSAO = "1.0";
+const VERSAO = "1.1";
 /* ============================================================ */
 </script>
 <script>
@@ -225,16 +226,20 @@ function jornadasDisponiveis() {
   return [...m.entries()].map(([id, nome]) => ({ id, nome }));
 }
 
+const MIX = "__mix";
+
 function poolDe(modo) {
   // Quem disse ignora a jornada de propósito: sorteando do acervo inteiro,
   // o jogador não decora o autor da jornada em que está.
-  const base = modo === "quem" ? versiculos : versiculos.filter(v => v.jornada_id === jornadaAtual);
+  const base = (modo === "quem" || jornadaAtual === MIX)
+    ? versiculos : versiculos.filter(v => v.jornada_id === jornadaAtual);
   return base.filter(v => v.modos.includes(modo));
 }
 
 function telaInicio() {
   const js = jornadasDisponiveis();
-  if (!jornadaAtual || !js.some(j => j.id === jornadaAtual)) jornadaAtual = js.length ? js[0].id : null;
+  if (!jornadaAtual || (jornadaAtual !== MIX && !js.some(j => j.id === jornadaAtual)))
+    jornadaAtual = js.length ? js[0].id : null;
   const nomeJ = (js.find(j => j.id === jornadaAtual) || {}).nome || "";
 
   app.innerHTML = topo("Palavra <span>Viva</span>") +
@@ -242,7 +247,8 @@ function telaInicio() {
         ? "Jogando com os 30 versículos embutidos. Para usar o banco, preencha URL e KEY no início do arquivo."
         : "Jogando com os versículos guardados no aparelho — o banco não respondeu agora."}</div>` : "") +
     (js.length > 1 ? `<div class="jornadas">${js.map(j =>
-        `<button class="chip ${j.id === jornadaAtual ? "on" : ""}" onclick="trocarJornada('${j.id}')">${j.nome}</button>`).join("")}</div>`
+        `<button class="chip ${j.id === jornadaAtual ? "on" : ""}" onclick="trocarJornada('${j.id}')">${j.nome}</button>`).join("")
+        }<button class="chip mix ${jornadaAtual === MIX ? "on" : ""}" onclick="trocarJornada('${MIX}')">✦ Tudo misturado</button></div>`
       : `<p class="dica">Jornada: ${nomeJ}</p>`) +
     MODOS.map(m => {
       const n = poolDe(m.id).length;
@@ -374,12 +380,44 @@ function jogoOrdem(v) {
 }
 
 /* ---------- 2. QUEM DISSE ---------- */
+/* A narrativa entrega a resposta ("E Jesus disse: ..."), então mostramos
+   só a fala e escondemos o nome de quem falou, se ele sobrar. */
+function frasePara(v) {
+  if (v.citacao && v.citacao.trim()) return mascarar(v.citacao.trim(), v);
+  let t = v.texto;
+  const i = t.indexOf(": ");
+  if (i > 0) {
+    const depois = t.slice(i + 2).trim();
+    if (depois.split(" ").length >= 4) t = depois;
+  }
+  return mascarar(t, v);
+}
+
+// títulos e papéis nunca são escondidos: apagar "Senhor" ou "Deus"
+// estragaria o versículo. Só nomes próprios de pessoas.
+const NAO_ESCONDER = ["senhor","deus","pai","filho","espirito","santo","cristo","anjo","voz",
+  "ceus","mestre","centuriao","menino","mulher","homem","pastor","pastores","profeta",
+  "discipulo","discipulos","povo","multidao","rei","sumo","sacerdote"];
+
+function semAcento(p) {
+  return p.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+
+function mascarar(t, v) {
+  const nome = (v.quem_disse && v.quem_disse.personagem) || "";
+  nome.split(/[\s(),]+/)
+    .filter(p => p.length > 3 && p[0] === p[0].toUpperCase() && !NAO_ESCONDER.includes(semAcento(p)))
+    .forEach(p => {
+      t = t.replace(new RegExp("\\b" + p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\b", "gi"), "———");
+    });
+  return t;
+}
 function jogoQuem(v) {
   const nivel = v.dificuldade === 1 ? "facil" : v.dificuldade === 2 ? "medio" : "dificil";
   const certo = v.quem_disse.personagem;
   const opcoes = baralho([certo, ...(v.quem_disse.distratores[nivel] || [])]);
   app.innerHTML = cabecalhoRodada() +
-    `<div class="verso serif">${v.texto}</div>
+    `<div class="verso serif">${frasePara(v)}</div>
      <p class="dica">Quem falou estas palavras?</p>
      <div class="opcoes">${opcoes.map((o, k) =>
         `<button class="opcao" id="op${k}" onclick="responder(${k})">${o}</button>`).join("")}</div>`;
