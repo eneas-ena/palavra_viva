@@ -35,6 +35,8 @@ h1,h2,h3{font-family:Cinzel,serif;font-weight:600;margin:0}
 
 .topo{display:flex;align-items:center;gap:12px;margin-bottom:22px}
 .topo h1{font-size:20px;letter-spacing:.03em;flex:1}
+.topo h1 i{font-style:normal;font-family:Nunito,sans-serif;font-size:10px;font-weight:400;
+  color:#5D6A85;letter-spacing:0;vertical-align:super;margin-left:5px}
 .topo h1 span{color:var(--ouro)}
 .voltar{background:none;border:none;color:#93A0BC;font-size:26px;line-height:1;
   padding:4px 10px 8px;cursor:pointer;font-family:inherit}
@@ -110,11 +112,12 @@ h1,h2,h3{font-family:Cinzel,serif;font-weight:600;margin:0}
 <div id="app"></div>
 
 <script>
-/* ====== CONFIGURAÇÃO — cole os dados do projeto do jogo ====== */
+/* ====== CONFIGURAÇÃO do projeto Palavra Viva no Supabase ====== */
 const CFG = {
-  URL: "https://bypmcnwkxxhqcbrpzefk.supabase.co",            // ex.: https://bypmcnwkxxhqcbrpzefk.supabase.co
-  KEY: "sb_publishable_9NqLWvtLWenNbiVgRUgp4w_tjcp7tjo"             // chave publicável (sb_publishable_...)
+  URL: "https://bypmcnwkxxhqcbrpzefk.supabase.co",
+  KEY: "sb_publishable_9NqLWvtLWenNbiVgRUgp4w_tjcp7tjo"
 };
+const VERSAO = "1.0";
 /* ============================================================ */
 </script>
 <script>
@@ -177,7 +180,7 @@ const comJornada = lst => lst.map(v => ({ ...v, jornada_id: "vida-de-jesus", jor
 function topo(titulo, voltarPara) {
   return `<div class="topo">
     ${voltarPara ? `<button class="voltar" onclick="${voltarPara}" aria-label="Voltar">‹</button>` : ""}
-    <h1>${titulo}</h1>
+    <h1>${titulo}<i>v${VERSAO}</i></h1>
     ${perfil ? `<div class="eu" onclick="telaPerfis()"><span class="bolinha">${perfil[0].toUpperCase()}</span>${perfil}</div>` : ""}
   </div>`;
 }
@@ -185,7 +188,7 @@ function topo(titulo, voltarPara) {
 function telaPerfis() {
   let nomes = [];
   try { nomes = JSON.parse(localStorage.getItem("pv_perfis") || "[]"); } catch (e) {}
-  app.innerHTML = `<div class="topo"><h1>Palavra <span>Viva</span></h1></div>
+  app.innerHTML = `<div class="topo"><h1>Palavra <span>Viva</span><i>v${VERSAO}</i></h1></div>
     <p class="dica">Quem vai jogar agora?</p>
     ${nomes.map(n => `<button class="cartao" onclick="entrar('${n.replace(/'/g, "\\'")}')">
         <b>${n}</b><small>continuar de onde parou</small></button>`).join("")}
@@ -516,7 +519,7 @@ function telaFim() {
 
 /* ---------- partida ---------- */
 (async function () {
-  app.innerHTML = `<div class="topo"><h1>Palavra <span>Viva</span></h1></div><p class="dica">Abrindo…</p>`;
+  app.innerHTML = `<div class="topo"><h1>Palavra <span>Viva</span><i>v${VERSAO}</i></h1></div><p class="dica">Abrindo…</p>`;
   versiculos = await buscarVersiculos();
   telaPerfis();
 })();
